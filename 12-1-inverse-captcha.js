@@ -96,8 +96,21 @@ What is the solution to your new captcha?
 
  */
 
+// We only need to check half the string, since the string is assumed to be circular, the number
+// that corresponds to the number in the first half will circle back to that number. Essentially
+// we add up the solutions in teh first half the string and multiply by 2 to get the answer for the
+// second half
 const inverseCaptcha2 = (str) => {
-  return str;
+  const ahead = str.length / 2;
+  let result = 0;
+
+  for (let x = 0; x < ahead; x++) {
+    if (str[x] === str[x + ahead]) {
+      result += parseInt(str[x]);
+    }
+  }
+
+  return result * 2;
 };
 
 const testStrings2 = [['1212', 6], ['1221', 0], ['123425', 4], ['123123', 12], ['12131415', 4]];
