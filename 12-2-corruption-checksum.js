@@ -32,27 +32,69 @@ const checksumString = `6046  6349  208 276 4643  1085  1539  4986  7006  5374  
 2049  6396  4111  6702  251 669 1491  245 210 4314  6265  694 5131  228 6195  6090
 458 448 324 235 69  79  94  78  515 68  380 64  440 508 503 452
 198 216 5700  4212  2370  143 5140  190 4934  539 5054  3707  6121  5211  549 2790
-3021  3407  218 1043  449 214 1594  3244  3097  286 114 223 1214  3102  257 3345`.match(/[0-9]+/g);
+3021  3407  218 1043  449 214 1594  3244  3097  286 114 223 1214  3102  257 3345`.split('\n').map((row) => {
+  return row.match(/[0-9]+/g);
+});
 
 /**
  * Should take a string's digits and return the difference between the lowest and the highest digit
  * @param  {String} str - string version of the number
  * @return {Number}     - sum between the lowest and highest digit
  */
-const checkSum = (str) => {
-  return str;
+const checkSum = (list) => {
+  let firstValue = parseInt(list[0]);
+  let minVal = firstValue;
+  let maxVal = firstValue;
+
+  for (let x = 1; x < list.length; x++) {
+    const digit = parseInt(list[x]);
+    minVal = Math.min(minVal, digit);
+    maxVal = Math.max(maxVal, digit);
+  }
+
+  return maxVal - minVal;
 };
 
 /**
  * Should take a stirng of checksums and run the checksum on each, returning the sum of all checksums
- * @param  {String} str - string of checksum strings
+ * @param  {Array}  str - array of checksum strings
  * @return {Number}     - sum of all checksums
  */
-const corruptionChecksum = (str) => {
-  return str;
+const corruptionChecksum = (list) => {
+  return list.reduce((total, current) => {
+    return total + checkSum(current);
+  }, 0);
 };
 
 const testStrings = [['5195', 8], ['753', 4], ['2468', 6]];
+
+/**
+--- Part Two ---
+
+"Great work; looks like we're on the right track after all. Here's a star for your effort." However, the program seems a little worried. Can programs be worried?
+
+"Based on what we're seeing, it looks like all the User wanted is some information about the evenly divisible values in the spreadsheet. Unfortunately, none of us are equipped for that kind of calculation - most of us specialize in bitwise operations."
+
+It sounds like the goal is to find the only two numbers in each row where one evenly divides the other - that is, where the result of the division operation is a whole number. They would like you to find those numbers on each line, divide them, and add up each line's result.
+
+For example, given the following spreadsheet:
+
+5 9 2 8
+9 4 7 3
+3 8 6 5
+In the first row, the only two numbers that evenly divide are 8 and 2; the result of this division is 4.
+In the second row, the two numbers are 9 and 3; the result is 3.
+In the third row, the result is 2.
+In this example, the sum of the results would be 4 + 3 + 2 = 9.
+
+What is the sum of each row's result in your puzzle input?
+ */
+
+const evenChecksum = (list) => {
+
+};
+
+
 
 const main = () => {
   console.log('Checking checkSum:');
@@ -60,6 +102,13 @@ const main = () => {
     const value = checkSum(testString[0]);
     console.log(value + ': ' + (value === testString[1]));
   });
+
+  console.log('Test Answer: ', + corruptionChecksum(testStrings.map((testString) => {
+    console.log(testString[0].split(''));
+    return testString[0].split('');
+  })));
+
+  console.log('Answer: ' + corruptionChecksum(checksumString));
 };
 
 main();
