@@ -93,7 +93,9 @@ What is the sum of each row's result in your puzzle input?
 const evenChecksum = (list) => {
   // Starting with the unoptimized solution first, which would be quadratic time since
   // every item would have to interact with every other item at least once
-  const numberedList = list.map(item => parseInt(item)).sort();
+  const numberedList = list.map(item => parseInt(item)).sort((a, b) => {
+    return a - b;
+  });
   
   for (let x = 0; x < numberedList.length; x++) {
     for (let y = x + 1; y < numberedList.length; y++) {
@@ -102,9 +104,18 @@ const evenChecksum = (list) => {
       }
     }
   }
+  
+  console.log('not found');
+  console.log(numberedList);
 };
 
 const secondTestString = [['5928', 4], ['9473', 3], ['3865', 2]];
+
+const secondCorruptionCheck = (matrix) => {
+  return matrix.reduce((total, row) => {
+    return total + evenChecksum(row);
+  }, 0);
+};
 
 const main = () => {
   console.log('Checking checkSum:');
@@ -125,6 +136,8 @@ const main = () => {
     const value = evenChecksum(testString[0].split(''));
     console.log(value + ': ' + (value === testString[1]));
   });
+  
+  console.log('Answer: ' + secondCorruptionCheck(checksumString));
 };
 
 main();
